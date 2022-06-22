@@ -56,27 +56,26 @@
         </button>
 
         <div class="collapse navbar-collapse p-2" id="navbarSupportedContent">
-          <ul class="navbar-nav w-75 ml-auto justify-content-between">
+          <ul class="navbar-nav ml-auto justify-content-between">
             <li class="nav-item active">
-              <a class="nav-link" href="#">HOME</a>
+              <a class="nav-link active" href="#">HOME</a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link" href="#">ABOUT US</a>
+              <a class="nav-link" href="#aboutus">ABOUT US</a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link" href="#">CHILDREN</a>
+              <a class="nav-link" href="#children">CHILDREN</a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link" href="#">AGED</a>
+              <a class="nav-link" href="#children">SENIOR CITIZENS</a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link" href="#">SENIOR CITIZENS</a>
-            </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="#">CONTACT US</a>
+              <a class="nav-link" href="#footer">CONTACT US</a>
             </li>
           </ul>
-          <button class="btn my-2 my-sm-0 ml-auto">CONTRIBUTE</button>
+          <div class="contribute_btn">
+            <button class="btn my-2 my-sm-0">CONTRIBUTE</button>
+          </div>
         </div>
       </div>
     </nav>
@@ -122,6 +121,7 @@
 
     <div
       class="container-fluid d-flex justify-content-around mb-5 bg-light p-5 w-100"
+      id="children"
     >
       <div class="container d-flex justify-content-around">
         <div class="card" style="width: 32rem; height: 31rem">
@@ -511,7 +511,9 @@
       <div class="container text-left">
         <div class="row">
           <div class="col-sm">
-            <h4 class="carousel_text">OUR <strong>TEAM</strong></h4>
+            <h4 class="carousel_text" id="aboutus">
+              OUR <strong>TEAM</strong>
+            </h4>
             <p class="text-black-50">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat
               consequuntur molestias esse labore natus. Necessitatibus eligendi
@@ -551,7 +553,7 @@
 
     <div class="container-fluid testimonial_section">
       <section id="testim" class="testim container">
-                <!-- <div class="testim-cover"> -->
+        <!-- <div class="testim-cover"> -->
         <div class="wrap">
           <span id="right-arrow" class="arrow right fa fa-chevron-right"></span>
           <span id="left-arrow" class="arrow left fa fa-chevron-left"></span>
@@ -652,7 +654,7 @@
     </div>
 
     <div class="container-fluid bg-dark text-center p-3">
-      <footer class="bg-dark container">
+      <footer class="bg-dark container" id="footer">
         <div class="container">
           <div class="row">
             <div class="col-sm">
@@ -686,6 +688,14 @@
       </footer>
     </div>
 
+    <button
+      type="button"
+      class="top_button btn-floating btn-lg"
+      id="btn-back-to-top"
+    >
+      <i class="fas fa-arrow-up"></i>
+    </button>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script
@@ -715,114 +725,137 @@
           return false;
         });
       })(jQuery);
-      'use strict'
-var	testim = document.getElementById("testim"),
-		testimDots = Array.prototype.slice.call(document.getElementById("testim-dots").children),
-    testimContent = Array.prototype.slice.call(document.getElementById("testim-content").children),
-    testimLeftArrow = document.getElementById("left-arrow"),
-    testimRightArrow = document.getElementById("right-arrow"),
-    testimSpeed = 4500,
-    currentSlide = 0,
-    currentActive = 0,
-    testimTimer,
-		touchStartPos,
-		touchEndPos,
-		touchPosDiff,
-		ignoreTouch = 30;
-;
-
-window.onload = function() {
-
-    // Testim Script
-    function playSlide(slide) {
-        for (var k = 0; k < testimDots.length; k++) {
+      ("use strict");
+      var testim = document.getElementById("testim"),
+        testimDots = Array.prototype.slice.call(
+          document.getElementById("testim-dots").children
+        ),
+        testimContent = Array.prototype.slice.call(
+          document.getElementById("testim-content").children
+        ),
+        testimLeftArrow = document.getElementById("left-arrow"),
+        testimRightArrow = document.getElementById("right-arrow"),
+        testimSpeed = 4500,
+        currentSlide = 0,
+        currentActive = 0,
+        testimTimer,
+        touchStartPos,
+        touchEndPos,
+        touchPosDiff,
+        ignoreTouch = 30;
+      window.onload = function () {
+        // Testim Script
+        function playSlide(slide) {
+          for (var k = 0; k < testimDots.length; k++) {
             testimContent[k].classList.remove("active");
             testimContent[k].classList.remove("inactive");
             testimDots[k].classList.remove("active");
-        }
+          }
 
-        if (slide < 0) {
-            slide = currentSlide = testimContent.length-1;
-        }
+          if (slide < 0) {
+            slide = currentSlide = testimContent.length - 1;
+          }
 
-        if (slide > testimContent.length - 1) {
+          if (slide > testimContent.length - 1) {
             slide = currentSlide = 0;
+          }
+
+          if (currentActive != currentSlide) {
+            testimContent[currentActive].classList.add("inactive");
+          }
+          testimContent[slide].classList.add("active");
+          testimDots[slide].classList.add("active");
+
+          currentActive = currentSlide;
+
+          clearTimeout(testimTimer);
+          testimTimer = setTimeout(function () {
+            playSlide((currentSlide += 1));
+          }, testimSpeed);
         }
 
-        if (currentActive != currentSlide) {
-            testimContent[currentActive].classList.add("inactive");            
+        testimLeftArrow.addEventListener("click", function () {
+          playSlide((currentSlide -= 1));
+        });
+
+        testimRightArrow.addEventListener("click", function () {
+          playSlide((currentSlide += 1));
+        });
+
+        for (var l = 0; l < testimDots.length; l++) {
+          testimDots[l].addEventListener("click", function () {
+            playSlide((currentSlide = testimDots.indexOf(this)));
+          });
         }
-        testimContent[slide].classList.add("active");
-        testimDots[slide].classList.add("active");
 
-        currentActive = currentSlide;
-    
-        clearTimeout(testimTimer);
-        testimTimer = setTimeout(function() {
-            playSlide(currentSlide += 1);
-        }, testimSpeed)
-    }
+        playSlide(currentSlide);
 
-    testimLeftArrow.addEventListener("click", function() {
-        playSlide(currentSlide -= 1);
-    })
-
-    testimRightArrow.addEventListener("click", function() {
-        playSlide(currentSlide += 1);
-    })    
-
-    for (var l = 0; l < testimDots.length; l++) {
-        testimDots[l].addEventListener("click", function() {
-            playSlide(currentSlide = testimDots.indexOf(this));
-        })
-    }
-
-    playSlide(currentSlide);
-
-    // keyboard shortcuts
-    document.addEventListener("keyup", function(e) {
-        switch (e.keyCode) {
+        // keyboard shortcuts
+        document.addEventListener("keyup", function (e) {
+          switch (e.keyCode) {
             case 37:
-                testimLeftArrow.click();
-                break;
-                
-            case 39:
-                testimRightArrow.click();
-                break;
+              testimLeftArrow.click();
+              break;
 
             case 39:
-                testimRightArrow.click();
-                break;
+              testimRightArrow.click();
+              break;
+
+            case 39:
+              testimRightArrow.click();
+              break;
 
             default:
-                break;
-        }
-    })
-		
-		testim.addEventListener("touchstart", function(e) {
-				touchStartPos = e.changedTouches[0].clientX;
-		})
-	
-		testim.addEventListener("touchend", function(e) {
-				touchEndPos = e.changedTouches[0].clientX;
-			
-				touchPosDiff = touchStartPos - touchEndPos;
-			
-				console.log(touchPosDiff);
-				console.log(touchStartPos);	
-				console.log(touchEndPos);	
+              break;
+          }
+        });
 
-			
-				if (touchPosDiff > 0 + ignoreTouch) {
-						testimLeftArrow.click();
-				} else if (touchPosDiff < 0 - ignoreTouch) {
-						testimRightArrow.click();
-				} else {
-					return;
-				}
-			
-		})
-}
+        testim.addEventListener("touchstart", function (e) {
+          touchStartPos = e.changedTouches[0].clientX;
+        });
+
+        testim.addEventListener("touchend", function (e) {
+          touchEndPos = e.changedTouches[0].clientX;
+
+          touchPosDiff = touchStartPos - touchEndPos;
+
+          console.log(touchPosDiff);
+          console.log(touchStartPos);
+          console.log(touchEndPos);
+
+          if (touchPosDiff > 0 + ignoreTouch) {
+            testimLeftArrow.click();
+          } else if (touchPosDiff < 0 - ignoreTouch) {
+            testimRightArrow.click();
+          } else {
+            return;
+          }
+        });
+      };
+      let mybutton = document.getElementById("btn-back-to-top");
+
+      // When the user scrolls down 20px from the top of the document, show the button
+      window.onscroll = function () {
+        scrollFunction();
+      };
+
+      function scrollFunction() {
+        if (
+          document.body.scrollTop > 20 ||
+          document.documentElement.scrollTop > 20
+        ) {
+          mybutton.style.display = "block";
+        } else {
+          mybutton.style.display = "none";
+        }
+      }
+      // When the user clicks on the button, scroll to the top of the document
+      mybutton.addEventListener("click", backToTop);
+
+      function backToTop() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+      }
     </script>
   </body>
 </html>
